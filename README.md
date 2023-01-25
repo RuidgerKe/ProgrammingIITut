@@ -3,3 +3,4 @@ Project Sword is a hack n' slash that takes part in a mystical forest. Follow al
 monsters, saving the day, the usualy jazz you know. 
 Playing in third person, tou navigate around a forest, with some freedom of choice in terms of pathing, and try to reach the end without dying.
 Pick up potions and other powerups along the way to aid yourself against the forces of evil
+SIDE NOTE: For some reason the github isn't detecting the build folder on its own. For the sake of submission it has been added to the assets folder. 
