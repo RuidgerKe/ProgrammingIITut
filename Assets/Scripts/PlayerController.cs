@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -19,8 +20,14 @@ public class PlayerController : MonoBehaviour
 
     private float distanceToGround;
     private bool isGrounded = true;
-    private bool isWalking;
+    private bool isWalking = false;
     private Vector2 rotate;
+
+    public GameObject projectile;
+    public Transform projectilePos;
+
+    //health check
+    CharacterStats cs;
 
     private void Awake()
     {
@@ -35,6 +42,15 @@ public class PlayerController : MonoBehaviour
         behavior.Player.Look.canceled += cntxt => rotate = Vector2.zero;
 
         behavior.Player.Attack.performed += cntxt => Attack();
+
+        //health check
+        cs = GetComponent<CharacterStats>();
+        behavior.Player.TakeDamage.performed += cntxt => cs.TakeDamage(2);
+            
+        rb = GetComponent<Rigidbody>();
+        animator = GetComponent<Animator>();
+
+        distanceToGround = GetComponent<Collider>().bounds.extents.y;
 
         cameraRotation = transform.eulerAngles; //easier than imputting all seperate axis's
         Cursor.lockState = CursorLockMode.Locked;
@@ -52,6 +68,7 @@ public class PlayerController : MonoBehaviour
         transform.Translate(Vector3.forward * move.y * Time.deltaTime * moveSpeed, Space.Self);
         transform.Translate(Vector3.right * move.x * Time.deltaTime * moveSpeed, Space.Self);
 
+        isGrounded = Physics.Raycast(transform.position, -Vector3.up, distanceToGround);
 
     }
     private void LateUpdate()
@@ -66,13 +83,21 @@ public class PlayerController : MonoBehaviour
 
     void Attack()
     {
-
+        Rigidbody rbBullet = Instantiate(projectile, projectilePos.position, Quaternion.identity).GetComponent<Rigidbody>();
+        rbBullet.AddForce(Vector3.forward * 32f, ForceMode.Impulse);
+        Destroy(rbBullet, 5);
     }
 
     private void Jump()
     {
         if (!isGrounded) return;
         rb.AddForce(Vector3.up * jumpHeight, ForceMode.Impulse);   
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawRay(transform.position, -Vector3.up * distanceToGround);
     }
 
 }
