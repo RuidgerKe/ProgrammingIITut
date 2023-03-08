@@ -65,8 +65,8 @@ public class EnemyController : MonoBehaviour
         float randomx = Random.Range(-walkpointRange, walkpointRange);
         float randomz = Random.Range(-walkpointRange, walkpointRange);
 
-        walkPoint = new Vector3(transform.position.x + randomx, transform.position.y, transform.position.z + randomz);
-        if (Physics.Raycast(walkPoint, -transform.up, 2f, groundlayer))
+        walkPoint = new Vector3(transform.position.x + randomx, transform.localPosition.y, transform.position.z + randomz);
+        if (Physics.Raycast(walkPoint, -transform.up, 1f, groundlayer))
         {
             walkpointSet = true;
         }
@@ -77,14 +77,28 @@ public class EnemyController : MonoBehaviour
 
     private void Chase() 
     {
-    
+        agent.SetDestination(player.position);
     }
 
     private void Beatup()
     {
+        agent.SetDestination(transform.position);
+        transform.LookAt(player);
 
+        if (!alreadyAtked)
+        {
+            Rigidbody bulletrb = Instantiate(projectile, projectiePos.transform.position, Quaternion.identity).GetComponent<Rigidbody>();
+            bulletrb.AddForce(transform.forward * 32f, ForceMode.Impulse);
+            Destroy(bulletrb.gameObject, 1);
+            alreadyAtked = true;
+            Invoke("ResetAttack", timeinbetweenatk);
+        }
     }
 
+    private void ResetAttack()
+    {
+        alreadyAtked = false;
+    }
     
 
     

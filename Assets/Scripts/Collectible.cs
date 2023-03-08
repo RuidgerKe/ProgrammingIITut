@@ -4,17 +4,26 @@ using UnityEngine;
 
 public class Collectible : MonoBehaviour
 {
+    public string nameCollectable;
+
     public int score;
 
-    private void OnCollisionEnter(Collision other)
+    public int restoreHp;
+
+    public Collectible(string name, int scorevalue, int restoreHPvalue)
     {
-        if (other.gameObject.tag == "Player")
-        {
-            Debug.Log("Ka-ching! You got a gem!");
-            ScoreManager.scoremanager.UpdateScore(score);
-            Destroy(gameObject);
-            
-        }
+        this.nameCollectable = name;
+        this.score = scorevalue;
+    this.restoreHp = restoreHPvalue;
+    }
+    public void UpdateScore()
+    {
+        ScoreManager.scoremanager.UpdateScore(score);
+    }
+
+    public void UpdateHp()
+    {
+        PlayerManager.playermanage.player.GetComponent<CharacterStats>().RestoreHealth(this.restoreHp);
     }
 
 }

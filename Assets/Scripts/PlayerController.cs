@@ -85,7 +85,7 @@ public class PlayerController : MonoBehaviour
     {
         Rigidbody rbBullet = Instantiate(projectile, projectilePos.position, Quaternion.identity).GetComponent<Rigidbody>();
         rbBullet.AddForce(Vector3.forward * 32f, ForceMode.Impulse);
-        Destroy(rbBullet, 5);
+        Destroy(rbBullet.gameObject, 5);
     }
 
     private void Jump()
