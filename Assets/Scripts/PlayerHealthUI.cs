@@ -19,7 +19,7 @@ public class PlayerHealthUI : MonoBehaviour
         healthSlider = UI.GetChild(0).GetComponent<Image>();
         GetComponent<CharacterStats>().OnHealthChange += OnHealthChanged;
         GetComponent<CharacterStats>().CurrentHp = 120;
-        Debug.Log(GetComponent<CharacterStats>().CurrentHp);
+        //Debug.Log(GetComponent<CharacterStats>().CurrentHp);
 
 
     }

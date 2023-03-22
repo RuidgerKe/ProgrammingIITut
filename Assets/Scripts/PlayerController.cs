@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviour, IDataPersistence
 {
     [SerializeField] Rigidbody rb;
     [SerializeField] Camera cam;
@@ -99,5 +99,14 @@ public class PlayerController : MonoBehaviour
         Gizmos.color = Color.red;
         Gizmos.DrawRay(transform.position, -Vector3.up * distanceToGround);
     }
+    //game data
+    public void SaveData(ref GameData data)
+    {
+        data.playerPosition = transform.position;
+    }
 
+    public void LoadData(GameData data)
+    {
+        transform.position = data.playerPosition;
+    }
 }
