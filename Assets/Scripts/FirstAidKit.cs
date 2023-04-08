@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class FirstAidKit : MonoBehaviour
 {
-    private Collectible heart;
+    //private Collectible heart;
     private void Start()
     {
-        heart = new Collectible("Heart", 0, 5);
+        //heart = new Collectible("Heart", 0, 5);
 
     }
 
@@ -15,7 +15,9 @@ public class FirstAidKit : MonoBehaviour
     {
         if (collision.collider.tag == "Player")
         {
-            heart.UpdateHp();
+            //heart.UpdateHp();
+            Inventory.inventory.consumableItemsController.UseItem("Heart");
+               
             Destroy(gameObject);
         }
     }
