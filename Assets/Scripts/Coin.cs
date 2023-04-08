@@ -6,16 +6,17 @@ public class Coin : MonoBehaviour
 {
    
 
-    Collectible coin;
+    //Collectible coin;
     private void Awake()
     {
-        coin = new Collectible("coin", 1, 0);
+        //coin = new Collectible("coin", 1, 0);
     }
     private void OnCollisionEnter(Collision other)
     {
         if (other.gameObject.tag == "Player")
         {
-            coin.UpdateScore();
+            //coin.UpdateScore();
+            Inventory.inventory.nonconsumableItemsController.UseItem("Coin");
             Destroy(gameObject);
 
         }

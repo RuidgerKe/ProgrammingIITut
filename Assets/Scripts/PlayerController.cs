@@ -40,7 +40,7 @@ public class PlayerController : MonoBehaviour, IDataPersistence
 
         behavior.Player.Look.performed += cntxt => rotate = cntxt.ReadValue<Vector2>();
         behavior.Player.Look.canceled += cntxt => rotate = Vector2.zero;
-
+        behavior.Player.RestoreHealth.performed += cntxt => RestoreHealth();
         behavior.Player.Attack.performed += cntxt => Attack();
 
         //health check
@@ -54,6 +54,13 @@ public class PlayerController : MonoBehaviour, IDataPersistence
 
         cameraRotation = transform.eulerAngles; //easier than imputting all seperate axis's
         Cursor.lockState = CursorLockMode.Locked;
+    }
+    void RestoreHealth()
+    {
+        if (Inventory.inventory.consumableItemsController.GetItem("Heart").GetOwnedQuantity() != 0)
+        {
+            Inventory.inventory.consumableItemsController.UseItem("Heart");
+        }
     }
 
     private void OnEnable()

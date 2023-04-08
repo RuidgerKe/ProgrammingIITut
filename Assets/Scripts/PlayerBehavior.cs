@@ -57,6 +57,14 @@ public class @PlayerBehavior : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""RestoreHealth"",
+                    ""type"": ""Button"",
+                    ""id"": ""e2c946f2-8aaf-4e5e-8605-33547a3332b4"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -158,6 +166,17 @@ public class @PlayerBehavior : IInputActionCollection, IDisposable
                     ""action"": ""TakeDamage"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c2d6183c-5b32-4c1d-be3c-8a08048b0db4"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""RestoreHealth"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -171,6 +190,7 @@ public class @PlayerBehavior : IInputActionCollection, IDisposable
         m_Player_Look = m_Player.FindAction("Look", throwIfNotFound: true);
         m_Player_Attack = m_Player.FindAction("Attack", throwIfNotFound: true);
         m_Player_TakeDamage = m_Player.FindAction("TakeDamage", throwIfNotFound: true);
+        m_Player_RestoreHealth = m_Player.FindAction("RestoreHealth", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -225,6 +245,7 @@ public class @PlayerBehavior : IInputActionCollection, IDisposable
     private readonly InputAction m_Player_Look;
     private readonly InputAction m_Player_Attack;
     private readonly InputAction m_Player_TakeDamage;
+    private readonly InputAction m_Player_RestoreHealth;
     public struct PlayerActions
     {
         private @PlayerBehavior m_Wrapper;
@@ -234,6 +255,7 @@ public class @PlayerBehavior : IInputActionCollection, IDisposable
         public InputAction @Look => m_Wrapper.m_Player_Look;
         public InputAction @Attack => m_Wrapper.m_Player_Attack;
         public InputAction @TakeDamage => m_Wrapper.m_Player_TakeDamage;
+        public InputAction @RestoreHealth => m_Wrapper.m_Player_RestoreHealth;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -258,6 +280,9 @@ public class @PlayerBehavior : IInputActionCollection, IDisposable
                 @TakeDamage.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnTakeDamage;
                 @TakeDamage.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnTakeDamage;
                 @TakeDamage.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnTakeDamage;
+                @RestoreHealth.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRestoreHealth;
+                @RestoreHealth.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRestoreHealth;
+                @RestoreHealth.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRestoreHealth;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -277,6 +302,9 @@ public class @PlayerBehavior : IInputActionCollection, IDisposable
                 @TakeDamage.started += instance.OnTakeDamage;
                 @TakeDamage.performed += instance.OnTakeDamage;
                 @TakeDamage.canceled += instance.OnTakeDamage;
+                @RestoreHealth.started += instance.OnRestoreHealth;
+                @RestoreHealth.performed += instance.OnRestoreHealth;
+                @RestoreHealth.canceled += instance.OnRestoreHealth;
             }
         }
     }
@@ -288,5 +316,6 @@ public class @PlayerBehavior : IInputActionCollection, IDisposable
         void OnLook(InputAction.CallbackContext context);
         void OnAttack(InputAction.CallbackContext context);
         void OnTakeDamage(InputAction.CallbackContext context);
+        void OnRestoreHealth(InputAction.CallbackContext context);
     }
 }
